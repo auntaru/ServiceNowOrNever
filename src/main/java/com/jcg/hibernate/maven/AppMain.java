@@ -2,6 +2,9 @@ package com.jcg.hibernate.maven;
 
 // 2019-11.01
 
+// Convert XML or JSON to Java Pojo Classes - Online
+// http://pojo.sodhanalibrary.com/
+
 // Hibernate Maven Example
 // https://examples.javacodegeeks.com/enterprise-java/hibernate/hibernate-maven-example/
 	

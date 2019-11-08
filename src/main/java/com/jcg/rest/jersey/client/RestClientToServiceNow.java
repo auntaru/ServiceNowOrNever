@@ -1,5 +1,42 @@
 package com.jcg.rest.jersey.client;
 
+// JSON simple Sample : 
+// https://www.codevoila.com/post/65/java-json-tutorial-and-example-json-java-orgjson
+// Example of how to parse JSON using JSON-Java (org.json) library 
+// install org.json in a Java project
+//    if your project is a Maven project, just add a dependency to the Maven pom.xml file of your project.
+
+/*    <!-- pom.xml -->
+
+<dependencies>
+    <!-- ... -->
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20160810</version>
+    </dependency>
+    <!-- ... -->
+</dependencies>
+
+*/
+
+// 
+// https://camel.apache.org/components/latest/servicenow-component.html
+
+// Apache HttpClient Basic Authentication Examples
+// https://www.mkyong.com/java/apache-httpclient-basic-authentication-examples/
+
+// How to retrieve data from ServiceNow using Camel framework?
+// https://stackoverflow.com/questions/58491395/how-to-retrieve-data-from-servicenow-using-camel-framework
+
+// https://github.com/apache/camel/blob/master/components/camel-servicenow/camel-servicenow-component/src/test/java/org/apache/camel/component/servicenow/ServiceNowTest.java
+// https://github.com/apache/camel/blob/master/components/camel-servicenow/camel-servicenow-component/src/test/java/org/apache/camel/component/servicenow/ServiceNowTestSupport.java
+// https://github.com/apache/camel/blob/master/components/camel-servicenow/camel-servicenow-component/pom.xml
+
+
+// https://stackoverflow.com/questions/50813361/servicenow-attachments-in-camel
+
+
 import java.io.IOException;
  
 import org.apache.http.HttpException;
@@ -27,7 +64,7 @@ public class RestClientToServiceNow {
  		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(new HttpHost("dev63641.service-now.com")),
-                new UsernamePasswordCredentials("admin", "ThisIsNotMyPassword"));
+                new UsernamePasswordCredentials("admin", "GwudX9bIuHU5"));
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
