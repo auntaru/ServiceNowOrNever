@@ -9,14 +9,13 @@
 
         <!-- PostgreSQL Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/servicenow</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">postgres</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/servicenow?currentSchema=private</property>
+        <property name="hibernate.connection.username">private</property>
+        <property name="hibernate.connection.password">private</property>
 		<property name="hibernate.hbm2ddl.auto">create</property>
  
         <!-- PostgreSQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-
 
 
 		<!-- MySQL Dialect 
