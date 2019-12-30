@@ -5,17 +5,35 @@
 
 <hibernate-configuration>
 	<session-factory>
-		<!-- SQL Dialect -->
+
+
+        <!-- PostgreSQL Connection settings -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/servicenow</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+ 
+        <!-- PostgreSQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+
+
+		<!-- MySQL Dialect 
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
-		<!-- Database Connection Settings -->
+		MySQL Database Connection Settings 
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3307/servicenow</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">toor</property>
-		<property name="show_sql">true</property>
 		<property name="hibernate.hbm2ddl.auto">create</property>
+		-->
 
+        <!-- Print executed SQL to stdout -->
+        <property name="show_sql">true</property>
+
+		
 		<!-- Specifying Session Context -->
 		<property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
 

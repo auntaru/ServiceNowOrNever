@@ -14,6 +14,9 @@ package com.jcg.hibernate.maven;
 // http://mrbool.com/how-to-create-database-table-using-hibernate/28269
 // Drop and re-create the database schema on startup --> <property name="hbmdl.auto">update</property>
 
+
+// https://examples.javacodegeeks.com/enterprise-java/hibernate/hibernate-eclipse-postgresql-example/
+
 import java.util.Date;
 
 import org.hibernate.Session;
