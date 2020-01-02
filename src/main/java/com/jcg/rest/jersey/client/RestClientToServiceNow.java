@@ -63,8 +63,8 @@ public class RestClientToServiceNow {
 
  		CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
-                new AuthScope(new HttpHost("dev63641.service-now.com")),
-                new UsernamePasswordCredentials("admin", "GwudX9bIuHU5"));
+                new AuthScope(new HttpHost("dev61830.service-now.com")),
+                new UsernamePasswordCredentials("admin", "e2pPznbQYXE1"));
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
@@ -72,7 +72,7 @@ public class RestClientToServiceNow {
         try {
         	// https://dev63641.service-now.com/api/now/v1/table/incident
             // HttpGet httpget = new HttpGet("https://instance.service-now.com/api/now/table/incident");
-            HttpGet httpget = new HttpGet("https://dev63641.service-now.com/api/now/v1/table/incident");
+            HttpGet httpget = new HttpGet("https://dev61830.service-now.com/api/now/v1/table/incident");
 
             httpget.setHeader("Accept", "application/json");
             System.out.println("Executing request " + httpget.getRequestLine());

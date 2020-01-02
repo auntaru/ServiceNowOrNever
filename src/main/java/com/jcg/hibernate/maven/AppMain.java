@@ -2,6 +2,9 @@ package com.jcg.hibernate.maven;
 
 // 2019-11.01
 
+// to launch main of AppMain - from command line after << mvn package >>
+// mvn exec:java -Dexec.mainClass="com.jcg.hibernate.maven.AppMain"
+
 // Convert XML or JSON to Java Pojo Classes - Online
 // http://pojo.sodhanalibrary.com/
 
@@ -32,7 +35,8 @@ public class AppMain {
 		// Creating Configuration Instance & Passing Hibernate Configuration File
 		Configuration configObj = new Configuration();
 		configObj.configure("hibernate.cfg.xml");
-
+		// configObj.configure("hibernate.pgsql.cfg.xml");
+		
 		// Since Hibernate Version 4.x, ServiceRegistry Is Being Used
 		ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder().applySettings(configObj.getProperties()).build(); 
 
