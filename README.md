@@ -6,3 +6,5 @@ This project will have a Java microservice that
 Java microservice gets the SNOW requests , 
    launches python scripts and
       afterwards updates the changes . . .
+
+https://www.youtube.com/watch?v=ngVxiJ78t3Q
