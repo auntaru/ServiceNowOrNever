@@ -17,6 +17,17 @@ package com.jcg.hibernate.maven;
 // http://mrbool.com/how-to-create-database-table-using-hibernate/28269
 // Drop and re-create the database schema on startup --> <property name="hbmdl.auto">update</property>
 
+/*
+ * https://github.com/auntaru/ServiceNowOrNever
+ * https://www.youtube.com/watch?v=ngVxiJ78t3Q
+ * cd C:\Java\Git\ServiceNowOrNever
+ * 
+mvn clean package
+mvn exec:java -Dexec.mainClass="com.jcg.hibernate.maven.AppMain"
+mvn exec:java -Dexec.mainClass="com.jcg.rest.jersey.client.RestClientToServiceNow"
+ * 
+ */
+
 import java.util.Date;
 
 import org.hibernate.Session;
