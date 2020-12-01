@@ -4,6 +4,7 @@ Repository https://github.com/auntaru/ServiceNowOrNever.git
 Create a pull request for 'TeST_addSpring' on GitHub by visiting:
      https://github.com/auntaru/ServiceNowOrNever/pull/new/TeST_addSpring
 
+Alex Untaru <auntaru>
 
 ServiceNowOrNever PuSH BRaNCH
 ServiceNowOrNever PuLL BRaNCH

@@ -1,0 +1,67 @@
+#!/usr/bin/env sh
+
+set -x
+set -e
+
+restore_bulk_docs () {
+# BEGIN restore_bulk_docs
+cat > /opt/couchdb/hsmdidata.json << ENDJSON
+{
+ "docs": [
+  {"id":"101e661441775c2ee3a61a6ee1000cad","key":"101e661441775c2ee3a61a6ee1000cad","value":{"rev":"1-149dca288734e89e4811449fc94d7cb9"},"doc":{"_id":"101e661441775c2ee3a61a6ee1000cad","_rev":"1-149dca288734e89e4811449fc94d7cb9","timestamp":1475651942170,"type":"RegionConfig","regionName":"EU","vHSMSlot":1,"label":"Europe"}},
+  {"id":"101e661441775c2ee3a61a6ee1000cfb","key":"101e661441775c2ee3a61a6ee1000cfb","value":{"rev":"1-a49333e4c691d758e9a663990446bef0"},"doc":{"_id":"101e661441775c2ee3a61a6ee1000cfb","_rev":"1-a49333e4c691d758e9a663990446bef0","timestamp":1475651942240,"type":"RegionConfig","regionName":"ROW","vHSMSlot":2,"label":"Rest of the world"}},
+  {"id":"_design/hsmdi","key":"_design/hsmdi","value":{"rev":"2-b0dda63f6721f0e197c990012734850f"},"doc":{"_id":"_design/hsmdi","_rev":"2-b0dda63f6721f0e197c990012734850f","views":{"all":{"map":"function(doc){ emit(doc._id, doc._rev)}"},"allCountryConfigs":{"map":"function(doc){ if (doc.type && doc.type == 'CountryConfig') {emit(doc._id, doc)}}"},"allRegionConfigs":{"map":"function(doc){ if (doc.type && doc.type == 'RegionConfig') {emit(doc._id, doc)}}"},"allConflicts":{"map":"function(doc) { if(doc._conflicts) { emit(doc._conflicts, null)}}"},"byRegionName":{"map":"function(doc) { if(doc.type && doc.type == 'RegionConfig' && doc.regionName) {emit(doc.regionName, doc)}}"},"byCountry":{"map":"function(doc) { if(doc.type && doc.type == 'CountryConfig' && doc.country) {emit(doc.country, doc)}}"}}}},
+  {"id":"e8421a9964b88e12eda5e01fc000010f","key":"e8421a9964b88e12eda5e01fc000010f","value":{"rev":"3-ab3c7218aef96a1241bc9ae52e9b64c1"},"doc":{"_id":"e8421a9964b88e12eda5e01fc000010f","_rev":"3-ab3c7218aef96a1241bc9ae52e9b64c1","timestamp":1557476120912,"type":"CountryConfig","country":"DE","drupalURL":"http://172.16.1.33:8001/","currentRsaId":"9d47957c5504ff2b963cf97ce42c644fbac8ff6f","newRsaId":"","createCountryRunning":false,"keyRotationRunning":false,"vhsmslot":1}}
+ ]
+}
+ENDJSON
+
+# cd /opt/couchdb/
+curl -d @/opt/couchdb/hsmdidata.json -H "Content-type: application/json" -X POST http://admin:atos@127.0.0.1:5984/hsmdi/_bulk_docs
+# cd -
+# END restore_bulk_docs
+}
+
+bidirectional_replication () {
+# BEGIN bidirectional_replication
+curl -X POST http://admin:atos@192.168.83.86:5984/_node/couchdb@192.168.83.86/_replicate -d '{"source":"http://admin:atos-hsmdi@192.168.83.86:5984/_node/couchdb@172.16.0.90/hsmdi", "target":"http://admin:atos-hsmdi@192.168.83.89:5984/_node/couchdb@192.168.83.89/hsmdi","continuous":true}' -H "Content-Type: application/json"
+curl -X POST http://admin:atos@192.168.83.89:5984/_node/couchdb@192.168.83.89/_replicate -d '{"source":"http://admin:atos-hsmdi@192.168.83.89:5984/_node/couchdb@192.168.83.89/hsmdi", "target":"http://admin:atos-hsmdi@172.16.0.90:5984/_node/couchdb@192.168.83.86/hsmdi","continuous":true}' -H "Content-Type: application/json"
+# END bidirectional_replication
+}
+
+create_cluster () {
+# BEGIN create_cluster
+# https://docs.couchdb.org/en/latest/setup/cluster.html
+# aLL nodes :
+# curl -X POST -H "Content-Type: application/json" http://admin:atos@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "node_count":"2"}'
+# 1st node = coordination-node --- To join 1st node to the cluster, run these commands for each node you want to add:
+# curl -X POST -H "Content-Type: application/json" http://admin:password@<setup-coordination-node>:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "port": 5984, "node_count": "3", "remote_node": "<remote-node-ip>", "remote_current_user": "<remote-node-username>", "remote_current_password": "<remote-node-password>" }'
+# curl -X POST -H "Content-Type: application/json" http://admin:password@<setup-coordination-node>:5984/_cluster_setup -d '{"action": "add_node", "host":"<remote-node-ip>", "port": <remote-node-port>, "username": "admin", "password":"password"}'
+# Once this is done run the following command to complete the cluster setup and add the system databases:
+# curl -X POST -H "Content-Type: application/json" http://admin:password@<setup-coordination-node>:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+# Verify install:
+# curl http://admin:password@<setup-coordination-node>:5984/_cluster_setup
+# Verify all cluster nodes are connected:
+# curl http://admin:password@<setup-coordination-node>:5984/_membership
+#
+#ip-node1=10.251.14.9 hostname=RDCVDEFTHGW01.saacon.net
+#ip-node2=10.251.14.7 hostname=RDCVDEFEUGW02.saacon.net
+
+#curl -X POST -H "Content-Type: application/json" http://admin:atos@192.168.83.86:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "node_count":"2"}'
+#curl -X POST -H "Content-Type: application/json" http://admin:atos@192.168.83.89:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "node_count":"2"}'
+#curl -X POST -H "Content-Type: application/json" http://admin:atos@192.168.83.86:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "port": 5984, "node_count": "2", "remote_node": "192.168.83.89", "remote_current_user": "admin", "remote_current_password": "atos" }'
+#curl -X POST -H "Content-Type: application/json" http://admin:atos@192.168.83.86:5984/_cluster_setup -d '{"action": "add_node", "host":"192.168.83.89", "port": "5984", "username": "admin", "password":"atos"}'
+#curl -X POST -H "Content-Type: application/json" http://admin:atos@192.168.83.86:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+
+curl -X POST -H "Content-Type: application/json" http://admin:atos@10.251.14.9:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "node_count":"2"}'
+curl -X POST -H "Content-Type: application/json" http://admin:atos@10.251.14.7:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "node_count":"2"}'
+curl -X POST -H "Content-Type: application/json" http://admin:atos@10.251.14.9:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "admin", "password":"atos", "port": 5984, "node_count": "2", "remote_node": "10.251.14.7", "remote_current_user": "admin", "remote_current_password": "atos" }'
+curl -X POST -H "Content-Type: application/json" http://admin:atos@10.251.14.9:5984/_cluster_setup -d '{"action": "add_node", "host":"10.251.14.7", "port": "5984", "username": "admin", "password":"atos"}'
+curl -X POST -H "Content-Type: application/json" http://admin:atos@10.251.14.9:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+
+# END create_cluster
+}
+
+
+create_cluster
+#restore_bulk_docs
